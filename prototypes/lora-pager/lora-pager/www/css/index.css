@@ -1,0 +1,93 @@
+﻿body {
+
+    font-family : Consolas;
+    background-color : cadetblue;
+    color : black;
+}
+
+.logo {
+}
+
+.pull-right {
+    float : right;        
+}
+
+.pull-left {
+    float : right;        
+}
+
+.spacer {
+    margin  : 0px 2px 2px 2px;    
+    color : black;
+}
+
+.me {
+    text-align : right;
+}
+
+.other {
+    text-align : left;
+}
+
+.invert {
+    background-color : black;
+    color : #3a909f;
+
+}
+
+ul#buttons {
+    padding: 0;
+}
+
+ul#buttons li {
+    display: inline;
+    font-weight : bolder;
+    font-size : 20px;
+}
+
+ul#buttons li a {
+        background-color: rgba(0, 0, 0, 0.20);
+    color: cadetblue;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 3px 3px 3px 3px ;
+}
+
+ul#buttons li a:hover {
+    background-color: rgba(0, 0, 0, 0.27);
+    color: orangered;
+}
+
+ul#menu {
+    padding: 0;
+}
+
+ul#menu li {
+    
+}
+
+ul#menu li a {
+    color: cadetblue;
+    text-decoration: none;
+}
+
+ul#menu li a:hover {
+    background-color: cadetblue;
+    color: black;
+}
+
+.title {
+    background-color: black;
+    color : cadetblue;
+    padding : 4px 8px 2px 8px;
+}
+
+#geolocation {
+    font-size : smaller;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

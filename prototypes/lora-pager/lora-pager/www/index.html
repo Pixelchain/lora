@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+    <title>lorapager</title>
+
+    <!-- lorapager references -->
+    <link href="css/index.css" rel="stylesheet" />
+</head>
+<body>
+    
+    <p> 
+        <label class="title" id="title">Send</label>
+        <label class="pull-right spacer" id="time">22:21</label>
+        <img width="24" src="images/bat.png" class="pull-right spacer" id="bat-icon"/>
+        <img width="24" src="images/gps.png" class="pull-right spacer" id="gps-icon" />
+        <img width="24" src="images/net.png" class="pull-right spacer" id="net-icon" />
+        <img width="24" src="images/bt.png" class="pull-right spacer" id="bt-icon" />
+    </p>
+
+    <ul id="buttons" class="footer">
+        <li><a href="#up">˄</a></li>
+        <li><a href="#down">˅</a></li>
+        <li><a href="#left">˂</a></li>
+        <li><a href="#right">˃</a></li>
+        <li class="pull-right"><a href="#enter">#</a></li>
+    </ul>
+
+    <div>        
+        <ul id="menu">
+        </ul>       
+    </div>
+
+   
+    <script src="scripts/jquery.js"></script>    
+    <!-- Cordova reference, this is added to your app when it's built. -->    
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+    <script src="scripts/index.js"></script>    
+</body>
+</html>
