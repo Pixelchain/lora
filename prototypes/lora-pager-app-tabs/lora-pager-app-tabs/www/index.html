@@ -1,0 +1,663 @@
+﻿<!DOCTYPE html>
+<!-- CSP support mode (required for Windows Universal apps): https://docs.angularjs.org/api/ng/directive/ngCsp -->
+<html lang="en" ng-app="app" ng-csp>
+<head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- JS dependencies (order matters!) -->
+    <script src="scripts/platformOverrides.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/onsen/js/onsenui.js"></script>
+
+    <!-- CSS dependencies -->
+    <link rel="stylesheet" href="lib/onsen/css/onsenui.css" />
+    <link rel="stylesheet" href="lib/onsen/css/onsen-css-components-blue-basic-theme.css" />
+
+    <!-- CSP support mode (required for Windows Universal apps) -->
+    <link rel="stylesheet" href="lib/angular/angular-csp.css" />
+
+
+    <!-- --------------- App init --------------- -->
+
+    <title>Abby Pager App</title>
+
+    <style>
+        .tab {
+            line-height: 1;
+        }
+
+        .tab-icon {
+            font-size: 24px;
+            padding: 0;
+            margin: 0;
+            vertical-align: top;
+            line-height: 28px;
+        }
+
+        .tab-label {
+            line-height: 11px;
+            vertical-align: top;
+            font-size: 11px;
+        }
+
+        .profile-wrapper {
+            padding: 16px 10px 0 10px;
+        }
+
+        .profile-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            -webkit-border-radius: 100%;
+            background-color: #ccc;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            padding: 4px 0 2px 0;
+        }
+
+        .profile-email {
+            font-size: 15px;
+            opacity: 0.4;
+        }
+
+        .switch--list-item {
+            margin-right: 0px;
+        }
+
+        .settings-header {
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 0.4;
+            padding: 10px 0 0px 10px;
+            margin-bottom: -4px;
+        }
+
+        .settings-list {
+            margin-top: 2px;
+        }
+
+        .slider-list {
+            width : 600px;
+        }
+
+        .item {
+            padding: 2px;
+            line-height: 1;
+        }
+
+        .item-thum {
+            background-color: #ccc;
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            -webkit-border-radius: 100%;
+        }
+
+        .item-title {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .item-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.3;
+            margin: 4px 0 0 0;
+            padding: 0 30px 0 0;
+        }
+
+        .item-label {
+            font-size: 12px;
+            color: #999;
+            float: right;
+        }
+
+        .range-list {
+          text-align: center;
+        }
+
+        .range-wrapper .range {
+          margin-top: 7px;
+          width: 90%;
+        }
+
+        ons-icon {
+          opacity: 0.8;
+        }
+
+        .lower {
+          opacity: 0.2;
+        }
+
+        .hint-setting {
+             margin-top:-15px;
+             margin-left:10px;
+             font-size:8pt
+        }
+
+        .hint-title {
+            color:grey;
+            margin-top:4px;
+            margin-left:10px;
+            font-size:8pt
+        }
+
+        .col {
+            border: 0px;
+            background: #fff;
+            overflow: hidden;
+            padding: 1px;
+            color: #999;
+            }
+
+         .row {
+            border: 0px;
+            background: #fff;
+            overflow: hidden;
+            padding: -10px;
+            color: #999;
+            }
+
+         .input-box {
+             padding : 5px;
+         }
+
+        .bubble{
+            background-color: #F2F2F2;
+            border-radius: 5px;
+            box-shadow: 4px 4px 16px #C2C2C2;
+            display: inline-block;
+            padding: 5px 18px;
+            position: relative;
+            vertical-align: top;
+        }
+
+        .bubble::before {
+            background-color: #F2F2F2;
+            content: "\00a0";
+            display: block;
+            height: 16px;
+            position: absolute;
+            top: 11px;
+            transform:             rotate( 29deg ) skew( -35deg );
+                -moz-transform:    rotate( 29deg ) skew( -35deg );
+                -ms-transform:     rotate( 29deg ) skew( -35deg );
+                -o-transform:      rotate( 29deg ) skew( -35deg );
+                -webkit-transform: rotate( 29deg ) skew( -35deg );
+            width:  20px;
+        }
+
+        .message {
+            font-size : 9pt;
+        }
+
+        .you {
+            float: left;   
+            margin: 5px 45px 5px 12px;            
+            background-color : #d7e5ff;
+        }
+
+        .you::before {
+            box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4 );
+            left: -9px;            
+            background-color : #d7e5ff;
+        }
+
+        .me {
+            float: right;    
+            margin: 1px 12px 5px 45px;                     
+            background-color : #c1ffc6;
+        }
+
+        .me::before {
+            box-shadow: 2px -2px 2px 0 rgba( 178, 178, 178, .4 );
+            right: -9px;                
+            background-color : #c1ffc6;
+        }
+
+
+        .msg-sender {                        
+            font-size : medium;
+            padding : -4px;
+            color : gray;
+        }
+
+        .msg-data {            
+            font-size :10pt;
+            padding : 4px;
+        }
+
+        .msg-timestamp {
+            font-size :smaller;
+            padding : 2px;
+            color :gray;
+        }
+
+    </style>
+
+</head>
+
+<body ng-controller="AppController">
+    <!-- Cordova reference -->
+    <script src="cordova.js"></script>
+    <script src="scripts/index.js"></script>
+    <!-- -->
+
+    <ons-page>
+        <ons-tabbar>
+            <ons-tab active="true" page="home.html">
+                <div class="tab">
+                    <ons-icon icon="fa-clock-o" class="tab-icon"></ons-icon>
+                    <div class="tab-label">Recents</div>
+                </div>
+            </ons-tab>
+            <ons-tab page="chats.html">
+                <div class="tab">
+                    <ons-icon icon="fa-comments" class="tab-icon"></ons-icon>
+                    <div class="tab-label">Chats</div>
+                </div>
+            </ons-tab>
+            <ons-tab page="settings.html">
+                <div class="tab">
+                    <ons-icon icon="ion-gear-a" class="tab-icon"></ons-icon>
+                    <div class="tab-label">Settings</div>
+                </div>
+            </ons-tab>
+            <ons-tab page="about.html">
+                <div class="tab">
+                    <ons-icon icon="fa-info" class="tab-icon"></ons-icon>
+                    <div class="tab-label">About</div>
+                </div>
+            </ons-tab>
+
+        </ons-tabbar>
+
+    </ons-page>
+
+    <ons-template id="home.html">
+        <ons-navigator title="Navigator" var="homeNavigator">
+            <ons-page>
+                <ons-toolbar>
+                    <div class="left"><ons-toolbar-button ng-click="newMessage()"><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
+                    <div class="center">Messages</div>
+                    <div class="right"></div>
+                </ons-toolbar>
+
+                <ons-list style="margin: -1px 0">
+                    <ons-list-item class="item" ng-repeat="message in messages.slice(0,100)" ng-click="readMessage(message,homeNavigator)">
+                            <ons-row>
+                                <ons-col>
+                                    <div class="bubble {{getMessageBubbleClass(message)}} message">                                        
+                                        <div class="msg-sender" ng-if="message.sender!=='me'">{{message.sender}}</div>                                        
+                                        <div class="msg-data">{{message.data}}</div>
+                                        <div class="msg-timestamp">{{message.time}}</div>
+                                    </div>
+                                </ons-col>
+                            </ons-row>
+                    </ons-list-item>
+                </ons-list>
+
+            </ons-page>
+        </ons-navigator>
+    </ons-template>
+
+    <ons-template id="chats.html">
+        <ons-navigator title="Navigator" var="chatsNavigator">
+            <ons-page>
+                <ons-toolbar>                    
+                    <div class="left">
+                        <ons-button modifier="quiet" style="margin-top:3px;" ng-click="editChats()">
+                            Edit
+                        </ons-button>
+                    </div>
+                    <div class="center">Chats</div>                    
+                    <div class="right"><ons-toolbar-button ng-click="newChat()"><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
+                </ons-toolbar>
+
+                <ons-list style="margin: -1px 0">
+                    <ons-list-item class="item" ng-repeat="chat in chats" ng-click="readChat(chat,chatsNavigator)">
+                        <ons-row>
+                            <ons-col>
+                                <div class="bubble {{getMessageBubbleClass(getLastMessage(chat))}} message">
+                                    <div class="msg-sender" ng-if="chat.sender!=='me'">{{chat.sender}}</div>
+                                    <div class="msg-data">{{getLastMessage(chat).data}}</div>
+                                    <div class="msg-timestamp">{{chat.time}}</div>
+                                </div>
+                            </ons-col>
+                        </ons-row>
+                    </ons-list-item>
+                </ons-list>
+
+            </ons-page>
+        </ons-navigator>
+    </ons-template>
+
+    <ons-template id="settings.html">
+        <ons-navigator title="Navigator" var="settingsNavigator">
+            <ons-page>
+                <ons-toolbar>
+                    <div class="center">Settings</div>
+                </ons-toolbar>                
+
+                <div class="settings-header">LoRa Messaging</div>
+                <p class="hint-title">Controls the timer that sends/receives LoRa messages</p>
+                <ons-list>                                        
+                    <ons-list-item>
+                        <ons-row>
+                            <ons-col width="40px">
+                                <ons-icon icon="fa-rss" class="lower"></ons-icon>
+                            </ons-col>
+                            <ons-col class="range-wrapper" style="width:400px;">
+                                <input type="range" value="50" class="range">
+                            </ons-col>
+                            <ons-col width="40px">
+                                TX
+                            </ons-col>
+                        </ons-row>
+                    </ons-list-item>
+
+                    <ons-list-item>
+                        <ons-row>
+                            <ons-col width="40px">
+                                <ons-icon icon="fa-rss" class="lower"></ons-icon>
+                            </ons-col>
+                            <ons-col class="range-wrapper" style="width:400px;">
+                                <input type="range" value="50" class="range">
+                            </ons-col>
+                            <ons-col width="40px">RX
+                            </ons-col>
+                        </ons-row>
+                    </ons-list-item>
+                </ons-list>
+
+                <div class="settings-header">Location Aquisition</div>
+                <p class="hint-title">Controls the timer that aquires the GPS location</p>
+                <ons-list>
+                    <ons-list-item>
+                        <ons-row>
+                            <ons-col width="40px">
+                                <ons-icon icon="fa-map-marker" class="lower"></ons-icon>
+                            </ons-col>
+                            <ons-col class="range-wrapper" style="width:400px;">
+                                <input type="range" value="50" class="range">
+                            </ons-col>
+                            <ons-col width="40px">
+                                <ons-icon icon="fa-map-marker"></ons-icon>
+                            </ons-col>
+                        </ons-row>                        
+                </ons-list>
+
+                <div class="settings-header">Transmission</div>
+                <p class="hint-title">Controls the transmission devices</p>
+                <ons-list modifier="inset" class="settings-list">
+                    <ons-list-item>
+                        Bluetooth
+                        <ons-switch modifier="list-item" checked></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Controls the Bluetooth power on/off</p>
+
+                    <ons-list-item>
+                        LoRa
+                        <ons-switch modifier="list-item" checked></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Controls the LoRa radio power on/off</p>
+
+                    <ons-list-item>
+                        GPS
+                        <ons-switch modifier="list-item" checked></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Controls the GPS device power on/off</p>
+
+                    <ons-list-item>
+                        SOS MODE
+                        <ons-switch modifier="list-item"></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Automatically configures the pager for low-power consumption, automatic location sending and SOS messaging</p>
+
+                </ons-list>
+
+                <div class="settings-header">Other</div>
+                <p style="color:grey; margin-top:8px; margin-left:10px; font-size:8pt">Various settings</p>
+                <ons-list modifier="inset" class="settings-list">
+                    <ons-list-item>
+                        Auto Sync on Bluetooth Connect
+                        <ons-switch modifier="list-item" checked></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Automatically sync the device with the smartphone when paired</p>
+
+                    <ons-list-item>
+                        Attach Location to Messages
+                        <ons-switch modifier="list-item" checked></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Attach location to each message</p>
+
+                    <ons-list-item>
+                        Delete Messages after Sync
+                        <ons-switch modifier="list-item" checked></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Delete messages from the device after Sync</p>
+
+                </ons-list>
+
+                <div class="settings-header">Social Sharing</div>
+                <p class="hint-title">Social media and Internet</p>
+                <ons-row class="profile-wrapper">
+                    <ons-col width="60px" class="profile-image-wrapper">
+                        <div class="profile-image"></div>
+                    </ons-col>
+
+                    <ons-col>
+                        <div class="profile-name">Daniel Codres</div>
+                        <div class="profile-email">dcodres@gmail.com</div>
+                    </ons-col>
+
+                </ons-row>
+
+                <ons-list modifier="inset" class="settings-list">
+                    <ons-list-item>
+                        Twitter
+                        <ons-switch modifier="list-item" checked></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Automatically share messages on Twitter</p>
+
+                    <ons-list-item>
+                        Facebook
+                        <ons-switch modifier="list-item" checked></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Automatically share messages on Facebook</p>
+
+                    <ons-list-item>
+                        Share Location
+                        <ons-switch modifier="list-item"></ons-switch>
+                    </ons-list-item>
+                    <p class="hint-setting">Share location too if available</p>
+
+                </ons-list>
+
+                <br>
+
+                <ons-list modifier="inset" class="settings-list">
+                    <ons-list-item modifier="tappable" ng-click="signout()">
+                        <ons-icon icon="ion-log-out" style="opacity: 0.8"></ons-icon>
+                        Sign out
+                    </ons-list-item>
+                    <p class="hint-setting">Sign out from social media</p>
+                </ons-list>
+
+                <br>
+
+            </ons-page>
+        </ons-navigator>
+    </ons-template>
+
+    <ons-template id="about.html">
+        <ons-navigator title="Navigator" var="aboutNavigator">
+            <ons-page>
+                <ons-toolbar>
+                    <div class="center">About</div>
+                </ons-toolbar>
+
+                <ons-row class="profile-wrapper">
+                    <ons-col width="60px" class="profile-image-wrapper">
+                        <div><img width="54"  src="images/abby256px.png" /></div>
+                    </ons-col>
+
+                    <ons-col>
+                        <div class="profile-name">Pager App</div>
+                        <div class="profile-email">v1.0.0</div>
+                    </ons-col>
+
+                </ons-row>
+
+                <ons-row>
+                <div style="margin:12px">
+                    <p>This application gives the posibility to manage Abby Pagers</p>
+                    <p>Functionality include:</p>
+                    <ul>
+                        <li>Syncronize Pager Messages</li>
+                        <li>LoRa/GPS configuration</li>
+                        <li>Update device firmware</li>
+                        <li>Share messages to social media</li>
+                        <li>and more...</li>
+                    </ul>
+                </div>
+                </ons-row>
+
+
+                <div class="settings-header">Others</div>
+
+                <ons-list modifier="inset" class="settings-list">
+                    <ons-list-item modifier="chevron" ng-click="terms(aboutNavigator)">
+                        Terms of Service
+                    </ons-list-item>
+
+                    <ons-list-item modifier="chevron" ng-click="privacy(aboutNavigator)">
+                        Privacy Policy
+                    </ons-list-item>
+                </ons-list>
+
+            </ons-page>
+        </ons-navigator>
+    </ons-template>
+
+    <ons-template id="readmessage.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button>Back</ons-back-button>
+                </div>
+                <div class="center" style="color:{{getMessageColor(currentMessage)}}">Message from {{currentMessage.sender}}</div>
+            </ons-toolbar>
+
+            <div style="text-align: center">
+                <div style="text-align: center">
+                    <p>
+                        {{currentMessage.data}}
+                    </p>
+                </div>
+                <ons-button modifier="light" style="color:dodgerblue" ng-click="markMessageAsRead()">
+                    Read
+                </ons-button>
+                <ons-button modifier="light" style="color:red;" ng-click="replyToMessage()">
+                    Reply
+                </ons-button>
+            </div>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="readchat.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button>Back</ons-back-button>
+                </div>
+                <div class="center">Chat with {{currentChat.sender}}</div>
+            </ons-toolbar>
+
+            <ons-list style="margin: -1px 0">
+                <ons-list-item class="item" ng-repeat="message in currentChat.messages.slice().reverse()" ng-click="readMessage(message,homeNavigator)">
+                    <ons-row>
+                        <ons-col>
+                            <div class="bubble {{getMessageBubbleClass(message)}} message">                                
+                                <div class="msg-data">{{message.data}}</div>
+                                <div class="msg-timestamp">{{message.time}}</div>
+                            </div>
+                        </ons-col>
+                    </ons-row>
+                </ons-list-item>
+                <ons-list-item>
+                    <div class="input-box">
+                        <form name="add-form" ng-submit="sendMessage(currentChat)">                            
+                            <input type="text" ng-model="chatMessageModel" name="sendMessageName" placeholder="" class="text-input" style="margin-top:8px; width: 100%;">                            
+                        </form>                        
+                    </div>
+                </ons-list-item>
+            </ons-list>
+
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="terms.html">
+            <ons-page>
+                <ons-toolbar>
+                    <div class="left">
+                        <ons-back-button>Back</ons-back-button>
+                    </div>
+                    <div class="center">Terms of Service</div>
+                </ons-toolbar>
+                <div style="text-align:center">
+                    <div style="text-align: center">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend risus ac mollis vestibulum. Curabitur iaculis leo non nisl dictum placerat. Praesent sit amet congue diam. Sed feugiat quam nec metus blandit ullamcorper. Quisque vel dapibus ipsum. In suscipit mauris nisl, non tempor nibh lobortis in. Cras facilisis aliquam venenatis. Vivamus vulputate leo at nibh ultricies commodo. Nam lacinia porttitor blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate aliquet elit, non faucibus lacus sollicitudin vel. Nam at odio nec tellus dignissim tempus at vitae ante. Praesent et lacinia dolor.
+                        </p><p>
+                            Integer non lorem quis risus dignissim interdum nec ac orci. Quisque fermentum est vitae augue hendrerit accumsan. Curabitur faucibus molestie tortor, quis tempus risus laoreet a. Etiam lacus nibh, aliquet vel risus a, tincidunt molestie eros. Suspendisse quis cursus ante. Suspendisse ullamcorper massa vitae cursus sollicitudin. Morbi vel neque dignissim, tincidunt eros non, maximus diam. Nam tellus ipsum, placerat at odio at, efficitur tempor nibh. Phasellus accumsan bibendum vestibulum.
+                        </p><p>
+                            Fusce vulputate tellus ac quam ultricies sagittis. Morbi dictum mauris eu molestie efficitur. Ut facilisis congue metus sit amet dapibus. Ut fermentum, dui a ullamcorper scelerisque, felis magna condimentum neque, in lobortis sem sapien vel neque. In eu urna ac massa tristique tempus. Nulla facilisi. Pellentesque lectus dui, pulvinar eu tristique et, ultrices eu justo. Nam semper commodo dolor, ac pulvinar lacus scelerisque eget. Maecenas tempus ultricies erat sed sodales. Duis ut sapien consequat, commodo turpis quis, dignissim sem.
+                        </p><p>
+                            Maecenas cursus cursus sapien, at sagittis ipsum egestas facilisis. Vestibulum diam tortor, scelerisque quis tellus et, finibus placerat arcu. Donec cursus maximus congue. Phasellus sem lacus, rutrum vitae vehicula id, cursus nec velit. Duis rutrum ac sem eget vestibulum. Donec porttitor, mauris nec pulvinar volutpat, ante justo volutpat lectus, nec condimentum diam leo eget ante. Ut dignissim dignissim felis. In hac habitasse platea dictumst. Donec sit amet mauris lectus. Fusce eget hendrerit elit, sed interdum tortor. Vestibulum lobortis nisl ligula, efficitur dignissim magna cursus id. Proin viverra odio at vehicula varius. Etiam porttitor purus id sagittis commodo. Donec pharetra sit amet mi id egestas. Etiam vitae mollis nisl.
+                        </p><p>
+                            In vulputate a sapien eu elementum. Sed maximus id magna in mollis. Vivamus quis nisi odio. Cras vitae pretium sapien. Sed nulla velit, sagittis vitae sodales nec, suscipit id justo. Mauris nec tortor metus. Quisque dapibus tellus ut erat ultricies, vel placerat erat tincidunt. Aenean eu sem imperdiet, commodo lacus at, aliquet ante. In hac habitasse platea dictumst. Nullam eget massa mollis, aliquet sem sit amet, rutrum arcu. Duis in posuere erat. Proin eget velit non arcu accumsan fringilla. Nam consequat nisl massa, in viverra diam dignissim vitae. Nulla sapien ligula, ultrices eleifend tortor eu, accumsan sollicitudin magna.
+                        </p>
+                    </div>
+                    <ons-button modifier="light" ng-click="settingsNavigator.popPage()">
+                        OK
+                    </ons-button>
+                </div>
+            </ons-page>        
+    </ons-template>
+
+    <ons-template id="privacy.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button>Back</ons-back-button>
+                </div>
+                <div class="center">Privacy Policy</div>
+            </ons-toolbar>
+            <div style="text-align:center">
+                <div style="text-align: center">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend risus ac mollis vestibulum. Curabitur iaculis leo non nisl dictum placerat. Praesent sit amet congue diam. Sed feugiat quam nec metus blandit ullamcorper. Quisque vel dapibus ipsum. In suscipit mauris nisl, non tempor nibh lobortis in. Cras facilisis aliquam venenatis. Vivamus vulputate leo at nibh ultricies commodo. Nam lacinia porttitor blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate aliquet elit, non faucibus lacus sollicitudin vel. Nam at odio nec tellus dignissim tempus at vitae ante. Praesent et lacinia dolor.
+                    </p><p>
+                        Integer non lorem quis risus dignissim interdum nec ac orci. Quisque fermentum est vitae augue hendrerit accumsan. Curabitur faucibus molestie tortor, quis tempus risus laoreet a. Etiam lacus nibh, aliquet vel risus a, tincidunt molestie eros. Suspendisse quis cursus ante. Suspendisse ullamcorper massa vitae cursus sollicitudin. Morbi vel neque dignissim, tincidunt eros non, maximus diam. Nam tellus ipsum, placerat at odio at, efficitur tempor nibh. Phasellus accumsan bibendum vestibulum.
+                    </p><p>
+                        Fusce vulputate tellus ac quam ultricies sagittis. Morbi dictum mauris eu molestie efficitur. Ut facilisis congue metus sit amet dapibus. Ut fermentum, dui a ullamcorper scelerisque, felis magna condimentum neque, in lobortis sem sapien vel neque. In eu urna ac massa tristique tempus. Nulla facilisi. Pellentesque lectus dui, pulvinar eu tristique et, ultrices eu justo. Nam semper commodo dolor, ac pulvinar lacus scelerisque eget. Maecenas tempus ultricies erat sed sodales. Duis ut sapien consequat, commodo turpis quis, dignissim sem.
+                    </p><p>
+                        Maecenas cursus cursus sapien, at sagittis ipsum egestas facilisis. Vestibulum diam tortor, scelerisque quis tellus et, finibus placerat arcu. Donec cursus maximus congue. Phasellus sem lacus, rutrum vitae vehicula id, cursus nec velit. Duis rutrum ac sem eget vestibulum. Donec porttitor, mauris nec pulvinar volutpat, ante justo volutpat lectus, nec condimentum diam leo eget ante. Ut dignissim dignissim felis. In hac habitasse platea dictumst. Donec sit amet mauris lectus. Fusce eget hendrerit elit, sed interdum tortor. Vestibulum lobortis nisl ligula, efficitur dignissim magna cursus id. Proin viverra odio at vehicula varius. Etiam porttitor purus id sagittis commodo. Donec pharetra sit amet mi id egestas. Etiam vitae mollis nisl.
+                    </p><p>
+                        In vulputate a sapien eu elementum. Sed maximus id magna in mollis. Vivamus quis nisi odio. Cras vitae pretium sapien. Sed nulla velit, sagittis vitae sodales nec, suscipit id justo. Mauris nec tortor metus. Quisque dapibus tellus ut erat ultricies, vel placerat erat tincidunt. Aenean eu sem imperdiet, commodo lacus at, aliquet ante. In hac habitasse platea dictumst. Nullam eget massa mollis, aliquet sem sit amet, rutrum arcu. Duis in posuere erat. Proin eget velit non arcu accumsan fringilla. Nam consequat nisl massa, in viverra diam dignissim vitae. Nulla sapien ligula, ultrices eleifend tortor eu, accumsan sollicitudin magna.
+                    </p>
+                </div>
+                <ons-button modifier="light" ng-click="settingsNavigator.popPage()">
+                    OK
+                </ons-button>
+            </div>
+        </ons-page>
+    </ons-template>
+
+</body>
+</html>
