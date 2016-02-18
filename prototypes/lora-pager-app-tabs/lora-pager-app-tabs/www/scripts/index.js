@@ -242,11 +242,11 @@
 
     myApp.controller('readChatController', function ($scope) {
         $scope.sendMessage = function (chat, inputValue) {
-            //ons.notification.alert({ message: 'new message' });
             myApp.sendMessage(chat, inputValue);
             $scope.currentInput = "";
-            //$('.page__content').animate({ scrollTop: $('.ons-list-inner').height() }, 2000).animate({ scrollTop: 0 }, 2000);            
-            $('.page__content').scrollTo("#chat-input", 800);
+            //$('ons-list > .ons-scroller__content').scrollTop(100);
+            $("#last-item").height(50 + (inputValue.length / 44) * 18);
+            $('.page__content').scrollTo("#last-item", 500);
         }
     });
 

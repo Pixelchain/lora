@@ -171,7 +171,7 @@
             border-radius: 5px;
             box-shadow: 4px 4px 16px #C2C2C2;
             display: inline-block;
-            padding: 5px 18px;
+            padding: 3px 18px;
             position: relative;
             vertical-align: top;
         }
@@ -180,7 +180,7 @@
                 background-color: #F2F2F2;
                 content: "\00a0";
                 display: block;
-                height: 16px;
+                height: 6px;
                 position: absolute;
                 top: 11px;
                 transform: rotate( 29deg ) skew( -35deg );
@@ -602,14 +602,17 @@
                         </ons-col>
                     </ons-row>
                 </ons-list-item>
-                <ons-list-item>
-                    <div class="input-box" ng-controller="readChatController">
-                        <form name="add-form" ng-submit="sendMessage(app.currentChat,currentInput)">
-                            <input type="text" ng-model="currentInput" name="sendMessageName" id="chat-input" placeholder="Enter your message" class="text-input" style="margin-top:8px; width: 100%;">
-                        </form>
-                    </div>
+                <ons-list-item style="height:60px" class="item" id="last-item">
                 </ons-list-item>
-            </ons-list>
+           </ons-list>
+
+           <ons-bottom-toolbar>
+               <div ng-controller="readChatController">
+                   <form name="add-form" ng-submit="sendMessage(app.currentChat,currentInput)">
+                       <input type="text" ng-model="currentInput" name="sendMessageName" id="chat-input" placeholder="Enter your message" class="text-input" style="margin-top:-2px; padding:-4px; width: 100%;">
+                   </form>
+               </div>
+           </ons-bottom-toolbar>
 
         </ons-page>
     </ons-template>
