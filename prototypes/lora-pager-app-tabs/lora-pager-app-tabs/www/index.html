@@ -46,6 +46,12 @@
             padding: 16px 10px 0 10px;
         }
 
+        .text-input {
+            border-style: solid;
+            border-width: 1px;
+            border-color : #A0A0A0;
+        }
+
         .profile-image {
             width: 50px;
             height: 50px;
@@ -180,7 +186,7 @@
                 background-color: #F2F2F2;
                 content: "\00a0";
                 display: block;
-                height: 6px;
+                height: 16px;
                 position: absolute;
                 top: 11px;
                 transform: rotate( 29deg ) skew( -35deg );
@@ -199,6 +205,7 @@
             float: left;
             margin: 5px 45px 5px 12px;
             background-color: #d7e5ff;
+            color : black;
         }
 
             .you::before {
@@ -211,6 +218,7 @@
             float: right;
             margin: 1px 12px 5px 45px;
             background-color: #c1ffc6;
+            color : black;
         }
 
             .me::before {
@@ -255,6 +263,7 @@
     <script src="cordova.js"></script>    
     <script src="scripts/jquery.js"></script>
     <script src="scripts/jquery.scrollTo.js"></script>
+    <script src="scripts/mqtt.js"></script>
     <script src="scripts/utils.js"></script>
     <script src="scripts/index.js"></script>
     <!-- -->
@@ -268,13 +277,19 @@
                         <div class="tab-label">Recents</div>
                     </div>
                 </ons-tab>
-                <ons-tab active="true" page="chats.html" persistent="true">
+                <ons-tab page="contacts.html">
+                    <div class="tab">
+                        <ons-icon icon="fa-users" class="tab-icon"></ons-icon>
+                        <div class="tab-label">Contacts</div>
+                    </div>
+                </ons-tab>
+                <ons-tab page="chats.html" persistent="true">
                     <div class="tab">
                         <ons-icon icon="fa-comments" class="tab-icon"></ons-icon>
                         <div class="tab-label">Chats</div>
                     </div>
                 </ons-tab>
-                <ons-tab page="settings.html">
+                <ons-tab active="true" page="settings.html">
                     <div class="tab">
                         <ons-icon icon="ion-gear-a" class="tab-icon"></ons-icon>
                         <div class="tab-label">Settings</div>
@@ -304,9 +319,9 @@
                         <ons-row>
                             <ons-col>
                                 <div class="bubble {{getMessageBubbleClass(message)}} message">
-                                    <div class="msg-sender" ng-if="message.sender!=='me'">{{message.sender}}</div>
+                                    <div class="msg-sender" ng-if="isNotMe(message)">{{message.sender}}</div>
                                     <!-- <div class="msg-icons" ng-if="message.replied"><ons-icon size="16px" icon="fa-reply" class="tab-icon"></ons-icon></div> -->
-                                    <!-- <div class="msg-icons" ng-if="message.read"><ons-icon size="16px" style="padding-top:15px;" icon="fa-check" class="tab-icon"></ons-icon></div> -->
+                                    <div class="msg-icons" ng-if="message.read"><ons-icon size="16px" style="padding-top:15px;" icon="fa-check" class="tab-icon"></ons-icon></div>
                                     <div class="msg-data">{{message.data}}</div>
                                     <div class="msg-timestamp">{{message.time}}</div>
                                 </div>
@@ -319,8 +334,39 @@
         </ons-navigator>
     </ons-template>
 
+    <ons-template id="contacts.html">
+        <ons-navigator title="Navigator" var="contactsNavigator" ng-switch="setCurrentNavigator(contactsNavigator)">
+            <ons-page>
+                <ons-toolbar>                    
+                    <div class="center">All Contacts</div>                    
+                    <div class="right"><ons-toolbar-button ng-click="newContact()"><ons-icon icon="fa-plus"></ons-icon></ons-toolbar-button></div>
+                </ons-toolbar>
+
+                <ons-list style="margin: -1px 0">
+                    <!--
+                    <ons-list-item class="item" ng-repeat="contact in app.getContacts() track by $index" ng-click="showContact(contact)">
+                        <ons-row>
+                            <ons-col>                                
+                                <div class="msg-timestamp">{{contact[$index].displayName}}</div>
+                            </ons-col>
+                        </ons-row>
+                    </ons-list-item> -->
+                    <ons-list-item class="item" ng-repeat="contact in app.getContacts()" ng-click="app.chatWith(contact)">
+                        <ons-row>
+                            <ons-col>
+                                <div class="msg-timestamp">{{contact.displayName}}</div>
+                            </ons-col>
+                        </ons-row>
+                    </ons-list-item>
+
+                </ons-list>
+
+            </ons-page>
+        </ons-navigator>
+    </ons-template>
+
     <ons-template id="chats.html">
-        <ons-navigator title="Navigator" var="chatsNavigator" ng-switch="setCurrentNavigator(chatsNavigator)">
+        <ons-navigator title="Navigator" var="chatsNavigator" ng-switch="setCurrentNavigator(chatsNavigator)" ons-postpush="scrollToEnd()">
             <ons-page>
                 <ons-toolbar>
                     <div class="left">
@@ -328,15 +374,15 @@
                             Edit
                         </ons-button>
                     </div>
-                    <div class="center">Chats</div>
+                    <div class="center">{{app.userId}}'s Chats</div>
                     <div class="right"><ons-toolbar-button ng-click="newChat()"><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
                 </ons-toolbar>
                 <ons-list style="margin: -1px 0">
                     <ons-list-item class="item" ng-repeat="chat in app.chats" ng-click="readChat(chat)">
                         <ons-row>
                             <ons-col>
-                                <div class="bubble {{getMessageBubbleClass(getLastMessage(chat))}} message">
-                                    <div class="msg-sender" ng-if="chat.sender!=='me'">{{chat.sender}}</div>
+                                <div class="bubble {{getMessageBubbleClass(getLastMessage(chat))}} message">                                                                        
+                                    <div class="msg-sender">{{getLastMessage(chat).sender}}</div>
                                     <div class="msg-data">{{getLastMessage(chat).data}}</div>
                                     <div class="msg-timestamp">{{chat.time}}</div>
                                 </div>
@@ -352,8 +398,24 @@
         <ons-navigator title="Navigator" var="settingsNavigator">
             <ons-page>
                 <ons-toolbar>
-                    <div class="center">Settings</div>
+                    <div class="center">UUID or Phone Number</div>
                 </ons-toolbar>
+                <ons-list>
+                    <ons-list-item>
+                        <ons-row>
+                            <ons-col width="40px">
+                                <ons-icon icon="fa-phone"></ons-icon>
+                            </ons-col>
+                            <ons-col class="range-wrapper" style="width:400px;">                                
+                                <div ng-controller="userIdController">
+                                    <form name="add-form" ng-submit="setUserId(userId)">
+                                        <input type="text" ng-model="userId" id="user-id-input" placeholder="Enter your User Id or Phone Number" class="text-input" style="margin-top:4px; padding:2px; width: 100%;">
+                                    </form>
+                                </div>
+                            </ons-col>
+                        </ons-row>
+                    </ons-list-item>
+                </ons-list>
 
                 <div class="settings-header">LoRa Messaging</div>
                 <p class="hint-title">Controls the timer that sends/receives LoRa messages</p>
@@ -467,7 +529,6 @@
                         <div class="profile-name">Daniel Codres</div>
                         <div class="profile-email">dcodres@gmail.com</div>
                     </ons-col>
-
                 </ons-row>
 
                 <ons-list modifier="inset" class="settings-list">
@@ -588,14 +649,15 @@
                 <div class="left">
                     <ons-back-button>Back</ons-back-button>
                 </div>
-                <div class="center">Chat with {{app.currentChat.sender}}</div>
+                <div class="center">Chat with {{app.currentChat.partner}}</div>
             </ons-toolbar>
 
             <ons-list style="margin: -1px 0">
                 <ons-list-item class="item" ng-repeat="message in app.currentChat.messages.slice().reverse()" ng-click="readMessage(message)">
                     <ons-row>
-                        <ons-col>
+                        <ons-col>                            
                             <div class="bubble {{getMessageBubbleClass(message)}} message">
+                                <div class="msg-icons" ng-if="message.read"><ons-icon size="16px" style="padding-top:15px; color:cadetblue" icon="fa-check" class="tab-icon"></ons-icon></div>
                                 <div class="msg-data">{{message.data}}</div>
                                 <div class="msg-timestamp">{{message.time}}</div>
                             </div>
@@ -609,7 +671,7 @@
            <ons-bottom-toolbar>
                <div ng-controller="readChatController">
                    <form name="add-form" ng-submit="sendMessage(app.currentChat,currentInput)">
-                       <input type="text" ng-model="currentInput" name="sendMessageName" id="chat-input" placeholder="Enter your message" class="text-input" style="margin-top:-2px; padding:-4px; width: 100%;">
+                       <input type="text" ng-model="currentInput" name="sendMessageName" id="chat-input" placeholder="Type your message" class="text-input" style="margin-left:2%; width: 96%;">
                    </form>
                </div>
            </ons-bottom-toolbar>
